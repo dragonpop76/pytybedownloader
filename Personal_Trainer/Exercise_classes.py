@@ -101,9 +101,6 @@ class Difficulty:
 
     @classmethod
     def get_attributes_by_name(cls, name):
-        # Search for Difficulty object attributes by object name and return them
-        for i, v in enumerate(cls.all):
-            print(i, v)
         for difficulty_obj in cls.all:
             if difficulty_obj.name == name:
                 name = f"{difficulty_obj.name} "
@@ -196,5 +193,4 @@ class Difficulty:
 
 
 Difficulty.instantiate_from_csv()
-easy = Difficulty[0]
-
+print(Difficulty.all[0].low_set)

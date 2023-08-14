@@ -5,7 +5,7 @@
 #
 # 1) randomly pick exercises (1 for lower body, one for core, one for upper body) - done!
 # 2) pick those exercises from different categories - done!
-# 3) User input influences how many reps/sets
+# 3) User input influences how many reps/sets - YES
 # 4) User can manually add new exercises - done!
 # 5) User can manually 'delete' exercises - YES
 # 6) manually added/removed exercises are remembered in future - YES
@@ -33,13 +33,18 @@ leg_exercises = lower_body.split("\n")
 arm_exercises = upper_body.split("\n")
 core_exercises = abdominal.split("\n")
 
+difficulty = Difficulty.all
+easy = Difficulty.all[0]
+medium = Difficulty.all[1]
+hard = Difficulty.all[2]
+
 
 def main_menu():
     print(f"Welcome to the Workout Generator! What would you like to do today? \n"
           f"1)Make a workout\n"
           f"2)Edit my exercises\n"
           f"3)Edit my sets/reps\n"
-          f"3)Revert to default\n"
+          f"4)Revert to default\n"
           f"5)Quit\n")
     choice = input()
     if choice == "1":
@@ -88,28 +93,28 @@ def make_workout():
 
     choose_difficulty = input("Would you like to do an easy, medium, or hard workout today? ")
     if choose_difficulty == "easy":
-        sets_leg_exercise = random.randint(1, 2)
-        reps_leg_exercise = random.randint(10, 20)
-        sets_arm_exercise = random.randint(1, 2)
-        reps_arm_exercise = random.randint(10, 20)
-        sets_core_exercise = random.randint(1, 2)
-        reps_core_exercise = random.randint(10, 20)
+        sets_leg_exercise = random.randint(int(easy.low_set), int(easy.high_set))
+        reps_leg_exercise = random.randint(int(easy.low_rep), int(easy.high_rep))
+        sets_arm_exercise = random.randint(int(easy.low_set), int(easy.high_set))
+        reps_arm_exercise = random.randint(int(easy.low_rep), int(easy.high_rep))
+        sets_core_exercise = random.randint(int(easy.low_set), int(easy.high_set))
+        reps_core_exercise = random.randint(int(easy.low_rep), int(easy.high_rep))
         print_workout()
     elif choose_difficulty == "medium":
-        sets_leg_exercise = random.randint(1, 2)
-        reps_leg_exercise = random.randint(15, 25)
-        sets_arm_exercise = random.randint(1, 2)
-        reps_arm_exercise = random.randint(15, 25)
-        sets_core_exercise = random.randint(1, 2)
-        reps_core_exercise = random.randint(15, 25)
+        sets_leg_exercise = random.randint(int(medium.low_set), int(medium.high_set))
+        reps_leg_exercise = random.randint(int(medium.low_rep), int(medium.high_rep))
+        sets_arm_exercise = random.randint(int(medium.low_set), int(medium.high_set))
+        reps_arm_exercise = random.randint(int(medium.low_rep), int(medium.high_rep))
+        sets_core_exercise = random.randint(int(medium.low_set), int(medium.high_set))
+        reps_core_exercise = random.randint(int(medium.low_rep), int(medium.high_rep))
         print_workout()
     elif choose_difficulty == "hard":
-        sets_leg_exercise = random.randint(1, 3)
-        reps_leg_exercise = random.randint(20, 30)
-        sets_arm_exercise = random.randint(1, 3)
-        reps_arm_exercise = random.randint(20, 30)
-        sets_core_exercise = random.randint(1, 3)
-        reps_core_exercise = random.randint(20, 30)
+        sets_leg_exercise = random.randint(int(hard.low_set), int(hard.high_set))
+        reps_leg_exercise = random.randint(int(hard.low_rep), int(hard.high_rep))
+        sets_arm_exercise = random.randint(int(hard.low_set), int(hard.high_set))
+        reps_arm_exercise = random.randint(int(hard.low_rep), int(hard.high_rep))
+        sets_core_exercise = random.randint(int(hard.low_set), int(hard.high_set))
+        reps_core_exercise = random.randint(int(hard.low_rep), int(hard.high_rep))
         print_workout()
     try_again = input("Are you happy with this workout? y/n:")
     if try_again == "y":
@@ -183,13 +188,20 @@ def edit_workout():
 
 
 def edit_sets_and_reps():
-    difficulty = Difficulty.all
     print("Here is your current configuration:")
     print(*difficulty, sep="\n")
     init_change_sets_reps = input("Would you like to make changes? y/n: ")
     if init_change_sets_reps == "y":
         name_choice = input("What difficulty would you like to modify?")
-        name = Difficulty(name_choice)
+        if name_choice == "easy":
+            name = Difficulty.all[0]
+        elif name_choice == "medium":
+            name = Difficulty.all[1]
+        elif name_choice == "hard":
+            name = Difficulty.all[2]
+        else:
+            print("invalid name selection. Please try again")
+            return
         print(name)
         sets_or_reps = input("Do you want to modify sets or reps?")
         if sets_or_reps == "sets":
