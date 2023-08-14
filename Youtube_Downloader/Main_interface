@@ -1,0 +1,54 @@
+
+establish a tkinter interface that opens
+Give myself buttons to press to install youtube videos
+create a text box where I can input the url of the video I want to download
+A drop-down menu with different options for video quality (and a calculation of how big the file will be)
+Bonus points if I can make tkinter display the amount of time left until download is complete
+
+1. GUI
+2. Everything that I need in order to download YT files can be selected within the gui
+3. can paste into gui, and then read that pasted input using a button
+4. progress bar
+5. multiple different download options
+6. Displays a thumbnail and title
+
+
+1st python file
+Tkinter class
+    Create geometry (allocate application size) - check
+
+    Set background color (White or grey) - check
+
+    create a label for the GUI that just includes it's name (Youtube Downloader) -check
+    place (or grid) the label onto the GUI - check
+
+    create a title for the downloader (Youtube_Downloader) (This one auto-places) -check
+
+    Create a textbox where I can copy/paste the url I want to download the video from (url_text) - check
+    create a capability for the textbox to read data, and put it into a variable (url) - done
+    place (or grid) url_text into the GUI -done
+
+    Create a button I can a press to make the application read the textbox (url_reader) - check
+    line of code explaining what I want url_reader to do when the button is pressed -done
+    (url_reader should return url so that url_holder can user it) -done
+    (it should also create labels for thumbnail and title) - done
+    line of code telling the button how to tell when it's pressed - done
+    place (or grid) url_reader into the GUI -done
+
+    create a label that only shows when the url_reader has been activated - shows title (video_title) - check
+    place (or grid) into GUI -done
+
+    create a img that only shows when the url_reader has been activated - shows thumbnail (video_thumbnail) -done
+    place (or grid) into GUI -done
+
+    Create a drop-down menu that shows all of the download options for the video (download_options) - done
+    place (or grid) download_options into the GUI -done
+
+    Create a bar that displays download progress (download_progress) - done
+    receive input from the download as it takes place and incrementally update the progress bar - done
+    place (or grid) download_progress into the GUI - done
+
+    Create a label for when download is complete - done
+    place (or grid) download_complete into GUI - done
+
+    establish mainloop - done
