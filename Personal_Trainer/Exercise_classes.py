@@ -193,4 +193,3 @@ class Difficulty:
 
 
 Difficulty.instantiate_from_csv()
-print(Difficulty.all[0].low_set)
