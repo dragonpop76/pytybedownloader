@@ -31,6 +31,9 @@ class Window:
         value = tk.StringVar(self.root)
         value.set(" ")
 
+        choice = tk.StringVar(self.root)
+        choice.set(" ")
+
         canvas = tk.Canvas(height=300, width=300, bg="grey", image=img)
         canvas.grid(column=0, row=3)
 
@@ -53,15 +56,24 @@ class Window:
 
             streams_list.clear()
 
-            for res in all_res_options:
-                stream = yt.streams.get_by_resolution(resolution=f"{res}")
-                if stream is None:
-                    pass
-                else:
-                    streams_list.append(f"{res}")
+            audio_or_video_list = ["audio", "video"]
+            audio_or_video_menu = tk.OptionMenu(self.root, variable=choice, *audio_or_video_list)
+            audio_or_video_menu.grid(column=1, row=1)
 
-            download_options = tk.OptionMenu(self.root, value, *streams_list)
-            download_options.grid(column=1, row=1)
+            audio_or_video = choice.get()
+
+            if audio_or_video == "video":
+                for res in all_res_options:
+                    stream = yt.streams.get_by_resolution(resolution=f"{res}")
+                    if stream is None:
+                        pass
+                    else:
+                        streams_list.append(f"{res}")
+            elif audio_or_video == "audio":
+                pass
+
+            download_options = tk.OptionMenu(self.root, variable=value, *streams_list)
+            download_options.grid(column=2, row=1)
 
         url_reader = tk.Button(height=1, width=3, background="red", command=url_read)
         url_reader.grid(column=1, row=2, padx=20)
