@@ -4,6 +4,7 @@ import pytube
 from PIL import ImageTk, Image
 from io import BytesIO
 import urllib.request
+from moviepy.editor import *
 
 
 class Window:
@@ -22,8 +23,11 @@ class Window:
         url_text = tk.Entry(self.root, font="Arial,14", disabledbackground="", width=30)
         url_text.grid(column=0, row=1)
 
-        # declaring file name for the download
-        file_namer = self.stream.default_filename
+        file_naming_instructions = tk.Label(self.root, font="Arial,14", text="Enter file name below")
+        file_naming_instructions.grid(column=0, row=4)
+
+        file_name = tk.Entry(self.root, font="Arial,14", width=30)
+        file_name.grid(column=0, row=5)
 
         all_res_options = ["720p", "480p", "360p", "240p", "144p"]
         streams_list = []
@@ -34,8 +38,10 @@ class Window:
         choice = tk.StringVar(self.root)
         choice.set(" ")
 
-        canvas = tk.Canvas(height=300, width=300, bg="grey", image=img)
+        canvas = tk.Canvas(height=300, width=300, bg="grey")
         canvas.grid(column=0, row=3)
+
+        audio_or_video_list = ["audio", "video"]
 
         def url_read():
             global img
@@ -56,8 +62,7 @@ class Window:
 
             streams_list.clear()
 
-            audio_or_video_list = ["audio", "video"]
-            audio_or_video_menu = tk.OptionMenu(self.root, variable=choice, *audio_or_video_list)
+            audio_or_video_menu = tk.OptionMenu(self.root, choice, *audio_or_video_list)
             audio_or_video_menu.grid(column=1, row=1)
 
             audio_or_video = choice.get()
@@ -70,9 +75,12 @@ class Window:
                     else:
                         streams_list.append(f"{res}")
             elif audio_or_video == "audio":
-                pass
+                stream = yt.streams.get_audio_only()
+                streams_list.append(stream)
+            else:
+                streams_list.append(" ")
 
-            download_options = tk.OptionMenu(self.root, variable=value, *streams_list)
+            download_options = tk.OptionMenu(self.root, value, *streams_list)
             download_options.grid(column=2, row=1)
 
         url_reader = tk.Button(height=1, width=3, background="red", command=url_read)
@@ -99,8 +107,18 @@ class Window:
             yt.register_on_progress_callback(func=downloading)
             yt.register_on_complete_callback(func=download_complete)
             download_choice = value.get()
-            stream = yt.streams.get_by_resolution(resolution=f"{download_choice}")
-            stream.download(output_path=r"C:\Users\drago\Downloads")
+            stream_choice = choice.get()
+            file_namer = file_name.get()
+            if stream_choice == "video":
+                stream = yt.streams.get_by_resolution(resolution=f"{download_choice}")
+                stream.download(output_path=r"C:\Users\drago\Downloads", filename=file_namer)
+            elif stream_choice == "audio":
+                stream = yt.streams.get_audio_only()
+                stream.download(output_path=r"C:\Users\drago\Downloads", filename=f"{file_namer}.mp4")
+                audio = AudioFileClip(fr"C:\Users\drago\Downloads\{file_namer}.mp4")
+                audio.write_audiofile(fr"C:\Users\drago\Downloads\{file_namer}.mp3")
+            else:
+                print("invalid download choice")
 
         # create a button to press when we're ready to start the download
         download_button = tk.Button(height=1, width=3, background="blue", command=start_download)
